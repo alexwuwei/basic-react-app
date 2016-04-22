@@ -1,0 +1,29 @@
+{
+  "name": "basic-react-app",
+  "version": "1.0.0",
+  "description": "A simple react app with CRUD functionality, in order to familiarize myself with React JS",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexwuwei/basic-react-app.git"
+  },
+  "author": "Hugo A Guerra <guerrahugoa@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alexwuwei/basic-react-app/issues"
+  },
+  "homepage": "https://github.com/alexwuwei/basic-react-app#readme",
+  "dependencies": {
+    "express": "^4.13.4"
+  },
+  "devDependencies": {
+    "body-parser": "^1.15.0",
+    "fs": "0.0.2",
+    "mongoose": "^4.4.13",
+    "path": "^0.12.7"
+  }
+}
