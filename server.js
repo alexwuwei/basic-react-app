@@ -1,13 +1,13 @@
 'use strict'
 
-const express = require('express');
-const app = express();
-const mongoose = require('mongoose');
-const fs = require('fs');
-const path = require('path');
-const bodyParser = require('body-parser');
-const PORT = process.env.PORT || 3000;
-const Message = require(__dirname + '/models/messages-model');
+const express     = require('express');
+const app         = express();
+const mongoose    = require('mongoose');
+const fs          = require('fs');
+const path        = require('path');
+const bodyParser  = require('body-parser');
+const PORT        = process.env.PORT || 3000;
+const Message     = require(__dirname + '/models/messages-model');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -30,6 +30,7 @@ app.get('/api/messages', (req, res) => {
 
 app.post('/api/messages', (req, res) => {
   req.on('data', (data) => {
+    console.log('data is: ', JSON.parse(data));
     req.body = JSON.parse(data);
     let newMessage = new Message(req.body);
     newMessage.save((err, message) => {
