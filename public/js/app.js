@@ -70,11 +70,12 @@
 var MessageContainer = React.createClass({
   loadMessagesFromServer: function() {
     $.ajax({
-      url: this.props.url,
+      url: 'http://localhost:3000/api/messages',
       dataType: 'json',
       cache: false,
       success: function(data) {
         this.setState({data: data})
+        console.log('data received is: ', data);
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
@@ -87,7 +88,7 @@ var MessageContainer = React.createClass({
     var newMessages = messages.concat([message]);
     this.setState({data: newMessages});
     $.ajax({
-      url: this.props.url,
+      url: 'http://localhost:3000/api/messages',
       dataType: 'json',
       type: 'POST',
       data: message,
@@ -162,12 +163,14 @@ var MessageForm = React.createClass({
     <form className="messageForm" onSubmit={this.handleSubmit}>
     <input
       type="text"
+      className="input-field"
       placeholder="Your name"
       value={this.state.author}
       onChange={this.handleAuthorChange}
       />
     <input
       type="text"
+      className="input-field"
       placeholder="Say something!"
       value={this.state.text}
       onChange={this.handleTextChange}
@@ -190,17 +193,17 @@ var Message = React.createClass({
   },
   render: function() {
     return (
-      <div className="message">
+      <section className="message">
         <h2 className="messageAuthor">
         {this.props.author}
         </h2>
         <span dangerouslySetInnerHTML={this.rawMarkup()} />
-      </div>
+      </section>
     )
   }
 })
 
 ReactDOM.render(
-  <MessageContainer url="http://localhost:3000/api/messages" pollInterval={3000} />,
+  <MessageContainer url="http://localhost:3000/api/messages" pollInterval={10000} />,
   document.getElementById('content')
 );
