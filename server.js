@@ -29,17 +29,21 @@ app.get('/api/messages', (req, res) => {
 });
 
 app.post('/api/messages', (req, res) => {
-  req.on('data', (data) => {
-    console.log('data is: ', JSON.parse(data));
-    req.body = JSON.parse(data);
-    let newMessage = new Message(req.body);
-    newMessage.save((err, message) => {
-      if (err) throw err;
-      res.status(200).json(message);
-      res.end();
-    })
-  })
-})
+  // req.on('data', (data) => {
+  //   console.log('data is: ', JSON.parse(data));
+  //   req.body = JSON.parse(data);
+  //   let newMessage = new Message(req.body);
+  //   newMessage.save((err, message) => {
+  //     if (err) throw err;
+  //     res.status(200).json(message);
+  //     res.end();
+  //   })
+  // })
+  var newMessage = new Message(req.body);
+  newMessage.save(function(err, message) {
+    res.status(200).json(message);
+  });
+});
 app.use('/', express.static(path.join(__dirname, 'public')));
 
 mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/db');

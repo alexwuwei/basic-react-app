@@ -81,19 +81,38 @@ var MessageContainer = React.createClass({
       }.bind(this)
     });
   },
+  handleMessageSubmit: function(message) {
+    var messages = this.state.data;
+    message.id = Date.now();
+    var newMessages = messages.concat([message]);
+    this.setState({data: newMessages});
+    $.ajax({
+      url: this.props.url,
+      dataType: 'json',
+      type: 'POST',
+      data: message,
+      success: function(data) {
+        this.setState({data: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        this.setState({data: messages});
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
   getInitialState: function() {
     return {data: []};
   },
   componentDidMount: function() {
     this.loadMessagesFromServer();
     setInterval(this.loadMessagesFromServer, this.props.pollInterval);
-  }
+  },
   render: function() {
     return (
       <section className="messageContainer">
       <h1>Messages</h1>
       <MessageList data={this.state.data} />
-      <MessageForm />
+      <MessageForm onMessageSubmit={this.handleMessageSubmit}/>
       </section>
     );
   }
@@ -128,9 +147,19 @@ var MessageForm = React.createClass({
   handleTextChange: function(e) {
     this.setState({text: e.target.value});
   },
+  handleSubmit: function(e) {
+    e.preventDefault();
+    var author = this.state.author.trim();
+    var text = this.state.text.trim();
+    if (!text || !author) {
+      return;
+    }
+    this.props.onMessageSubmit({author: author, text: text});
+    this.setState({author: '', text:''});
+  },
   render: function() {
     return (
-    <form className="messageForm">
+    <form className="messageForm" onSubmit={this.handleSubmit}>
     <input
       type="text"
       placeholder="Your name"
@@ -155,20 +184,23 @@ var data = [
 ];
 
 var Message = React.createClass({
-  //raw markdown stuff left out on purpose.
+  rawMarkup: function() {
+    var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
+    return { __html: rawMarkup };
+  },
   render: function() {
     return (
       <div className="message">
         <h2 className="messageAuthor">
         {this.props.author}
         </h2>
-        {marked(this.props.children).toString()}
+        <span dangerouslySetInnerHTML={this.rawMarkup()} />
       </div>
     )
   }
 })
 
 ReactDOM.render(
-  <MessageContainer url="/api/messages" pollInterval={2000} />,
+  <MessageContainer url="http://localhost:3000/api/messages" pollInterval={3000} />,
   document.getElementById('content')
 );
