@@ -54,7 +54,7 @@ app.put('/api/messages/:id', (req, res) => {
 });
 
 app.delete('/api/messages/:id', (req, res) => {
-  console.log('DEL route hit for /customers/:id');
+  console.log('DEL route hit for /customers/', req.params.id);
    Message.findById(req.params.id, (err, message) => {
      message.remove((err, message) => {
        res.json({message: 'message removed'});

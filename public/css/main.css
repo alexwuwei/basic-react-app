@@ -1,14 +1,17 @@
 .messageForm {
   box-sizing: border-box;
-  width: 70%;
+  width: 50%;
   margin: 100px auto 0;
   box-shadow: 2px 2px 5px 1px rgba(0,0,0,0.2);
-  padding-bottom: 40px;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  padding-left: 1%;
   border-radius: 3px;
-  h1 {
+  background-color: #436399;
+  /*h1 {
     box-sizing: border-box;
     padding: 20px;
-  }
+  }*/
 }
 }
 
@@ -24,4 +27,9 @@ input {
 	border: none;
 	border-radius: 0;
 	border-bottom: 1px solid #757575;
+}
+
+body {
+  background-color: #0AE7FF;
+  color: #CC331C;
 }

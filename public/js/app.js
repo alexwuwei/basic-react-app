@@ -33,8 +33,9 @@ var MessageContainer = React.createClass({
       dataType: 'json',
       cache: false,
       success: function(data) {
-        this.setState({data: data})
-        console.log('data received is: ', data);
+        this.setState(data);
+        console.log(data);
+        // console.log('data received is: ', data);
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
@@ -111,6 +112,9 @@ var MessageContainer = React.createClass({
 });
 
 var MessageList = React.createClass({
+  getDefaultProps: function() {
+   return { data: [] }
+ },
   render: function() {
     var messageNodes = this.props.data.map(function(message) {
       return (
