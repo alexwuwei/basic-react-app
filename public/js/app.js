@@ -33,7 +33,7 @@ var MessageContainer = React.createClass({
       dataType: 'json',
       cache: false,
       success: function(data) {
-        this.setState(data);
+        this.setState({data: data});
         console.log(data);
         // console.log('data received is: ', data);
       }.bind(this),
@@ -53,7 +53,7 @@ var MessageContainer = React.createClass({
       type: 'POST',
       data: message,
       success: function(data) {
-        this.setState({data: data});
+        this.setState(data);
       }.bind(this),
       error: function(xhr, status, err) {
         this.setState({data: messages});
@@ -61,38 +61,38 @@ var MessageContainer = React.createClass({
       }.bind(this)
     });
   },
-  handleMessageChange: function(message) {
-    //TODO: stuff goes here
-    $.ajax({
-      url: 'http://localhost:3000/api/messages/' + message._id,
-      dataType: 'json',
-      type: 'PUT',
-      data: message,
-      success: function(data) {
-        this.setState({data: data});
-      }.bind(this),
-      error: function(xhr, status, err) {
-        this.setState({data: messages});
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
-    });
-  },
-  handleMessageDelete: function(message) {
-    //TODO: stuff goes here
-    $.ajax({
-      url: 'http://localhost:3000/api/messages/' + message._id,
-      dataType: 'json',
-      type: 'DELETE',
-      data: message,
-      success: function(data) {
-        this.setState({data: data});
-      }.bind(this),
-      error: function(xhr, status, err) {
-        this.setState({data: messages});
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
-    });
-  },
+  // handleMessageChange: function(message) {
+  //   //TODO: stuff goes here
+  //   $.ajax({
+  //     url: 'http://localhost:3000/api/messages/' + message._id,
+  //     dataType: 'json',
+  //     type: 'PUT',
+  //     data: message,
+  //     success: function(data) {
+  //       this.setState({data});
+  //     }.bind(this),
+  //     error: function(xhr, status, err) {
+  //       this.setState({data: messages});
+  //       console.error(this.props.url, status, err.toString());
+  //     }.bind(this)
+  //   });
+  // },
+  // handleMessageDelete: function(message) {
+  //   //TODO: stuff goes here
+  //   $.ajax({
+  //     url: 'http://localhost:3000/api/messages/' + message._id,
+  //     dataType: 'json',
+  //     type: 'DELETE',
+  //     data: message,
+  //     success: function(data) {
+  //       this.setState(data);
+  //     }.bind(this),
+  //     error: function(xhr, status, err) {
+  //       this.setState({data: messages});
+  //       console.error(this.props.url, status, err.toString());
+  //     }.bind(this)
+  //   });
+  // },
   getInitialState: function() {
     return {data: []};
   },
@@ -112,9 +112,6 @@ var MessageContainer = React.createClass({
 });
 
 var MessageList = React.createClass({
-  getDefaultProps: function() {
-   return { data: [] }
- },
   render: function() {
     var messageNodes = this.props.data.map(function(message) {
       return (
