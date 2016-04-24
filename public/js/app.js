@@ -1,71 +1,30 @@
-// // const marked = require('marked');
-//
-// var MessageContainer = React.createClass({
-//   render: function() {
-//     return (
-//       <section className="messageContainer">
-//       <h1>Messages</h1>
-//       <MessageList data={this.props.data} />
-//       <MessageForm />
-//       </section>
-//     );
-//   }
-// });
-//
-// var MessageList = React.createClass({
-//   render: function() {
-//     var messageNodes = this.props.data.map(function(message) {
-//       return (
-//         <Message author={message.author} key={message.id}>
-//         {message.text}
-//         </Message>
-//       );
-//     });
-//     return (
-//       <section className="messageList">
-//       // <Message author="bob" >This is a message</Message>
-//       // <Message author="mary" >This is another message</Message>
-//       {messageNodes}
-//       </section>
-//     );
-//   }
-// });
-//
-// var MessageForm = React.createClass({
-//   render: function() {
-//     return (
-//     <section className="messageForm">
-//     This is the message form
-//     </section>
-//   );
-//   }
-// });
-//
-// var data = [
-//   {id: 1, author: 'bob', text: 'hello'},
-//   {id: 2, author: 'bill', text: 'something'}
-// ];
-//
-// var Message = React.createClass({
-//   //raw markdown stuff left out on purpose.
-//   render: function() {
-//     return (
-//       <div className="message">
-//         <h2 className="messageAuthor">
-//         {this.props.author}
-//         </h2>
-//         {marked(this.props.children).toString()}
-//       </div>
-//     )
-//   }
-// })
-//
-// ReactDOM.render(
-//   <MessageContainer data={data} />,
-//   document.getElementById('content')
-// );
 
-// const marked = require('marked');
+var Message = React.createClass({
+  rawMarkup: function() {
+    var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
+    return { __html: rawMarkup };
+  },
+  handleUpdate: function(e) {
+    //TODO: stuff goes here
+  },
+  handleDelete: function(e) {
+    //TODO: stuff goes here
+  },
+  render: function() {
+    return (
+      <section className="message">
+      <h2 className="messageAuthor">
+      {this.props.author}
+      </h2>
+      <span dangerouslySetInnerHTML={this.rawMarkup()} />
+      <div>
+      <button>Update</button>
+      <button>Delete</button>
+      </div>
+      </section>
+    )
+  }
+})
 
 var MessageContainer = React.createClass({
   loadMessagesFromServer: function() {
@@ -91,6 +50,38 @@ var MessageContainer = React.createClass({
       url: 'http://localhost:3000/api/messages',
       dataType: 'json',
       type: 'POST',
+      data: message,
+      success: function(data) {
+        this.setState({data: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        this.setState({data: messages});
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
+  handleMessageChange: function(message) {
+    //TODO: stuff goes here
+    $.ajax({
+      url: 'http://localhost:3000/api/messages/' + message._id,
+      dataType: 'json',
+      type: 'PUT',
+      data: message,
+      success: function(data) {
+        this.setState({data: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        this.setState({data: messages});
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
+  handleMessageDelete: function(message) {
+    //TODO: stuff goes here
+    $.ajax({
+      url: 'http://localhost:3000/api/messages/' + message._id,
+      dataType: 'json',
+      type: 'DELETE',
       data: message,
       success: function(data) {
         this.setState({data: data});
@@ -130,8 +121,6 @@ var MessageList = React.createClass({
     });
     return (
       <section className="messageList">
-      // <Message author="bob" >This is a message</Message>
-      // <Message author="mary" >This is another message</Message>
       {messageNodes}
       </section>
     );
@@ -186,22 +175,6 @@ var data = [
   {id: 2, author: 'bill', text: 'something'}
 ];
 
-var Message = React.createClass({
-  rawMarkup: function() {
-    var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
-    return { __html: rawMarkup };
-  },
-  render: function() {
-    return (
-      <section className="message">
-        <h2 className="messageAuthor">
-        {this.props.author}
-        </h2>
-        <span dangerouslySetInnerHTML={this.rawMarkup()} />
-      </section>
-    )
-  }
-})
 
 ReactDOM.render(
   <MessageContainer url="http://localhost:3000/api/messages" pollInterval={10000} />,

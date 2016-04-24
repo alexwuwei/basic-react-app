@@ -44,6 +44,23 @@ app.post('/api/messages', (req, res) => {
     res.status(200).json(message);
   });
 });
+
+app.put('/api/messages/:id', (req, res) => {
+  console.log('PUT route hit for /customers/:id');
+    Message.findByIdAndUpdate({_id: req.params.id}, req.body, (err, message) => {
+      if (err) return res.send(err);
+      res.json(message);
+    });
+});
+
+app.delete('/api/messages/:id', (req, res) => {
+  console.log('DEL route hit for /customers/:id');
+   Message.findById(req.params.id, (err, message) => {
+     message.remove((err, message) => {
+       res.json({message: 'message removed'});
+     })
+   })
+})
 app.use('/', express.static(path.join(__dirname, 'public')));
 
 mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/db');
