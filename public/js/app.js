@@ -1,3 +1,6 @@
+// var React = require('react');
+// var ReactDOM = require('react-dom');
+
 
 var Message = React.createClass({
   rawMarkup: function() {
@@ -61,22 +64,22 @@ var MessageContainer = React.createClass({
       }.bind(this)
     });
   },
-  // handleMessageChange: function(message) {
-  //   //TODO: stuff goes here
-  //   $.ajax({
-  //     url: 'http://localhost:3000/api/messages/' + message._id,
-  //     dataType: 'json',
-  //     type: 'PUT',
-  //     data: message,
-  //     success: function(data) {
-  //       this.setState({data});
-  //     }.bind(this),
-  //     error: function(xhr, status, err) {
-  //       this.setState({data: messages});
-  //       console.error(this.props.url, status, err.toString());
-  //     }.bind(this)
-  //   });
-  // },
+  handleMessageChange: function(message) {
+    //TODO: stuff goes here
+    $.ajax({
+      url: 'http://localhost:3000/api/messages/' + message._id,
+      dataType: 'json',
+      type: 'PUT',
+      data: message,
+      success: function(data) {
+        this.setState({data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        this.setState({data: messages});
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
   // handleMessageDelete: function(message) {
   //   //TODO: stuff goes here
   //   $.ajax({
@@ -112,6 +115,17 @@ var MessageContainer = React.createClass({
 });
 
 var MessageList = React.createClass({
+
+//this gets rid of the flattenChildren error!!!
+  // render: function() {
+  //   var messageNodes = this.props.data.forEach(function(message) {
+  //   return (
+  //     <Message author={message.author} key={message.id}>
+  //     {message.text}
+  //     </Message>
+  //   );
+  // })
+
   render: function() {
     var messageNodes = this.props.data.map(function(message) {
       return (
@@ -119,7 +133,7 @@ var MessageList = React.createClass({
         {message.text}
         </Message>
       );
-    });
+    })
     return (
       <section className="messageList">
       {messageNodes}
