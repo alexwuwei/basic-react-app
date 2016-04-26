@@ -1,6 +1,7 @@
 'use strict';
 
 jest.unmock('../public/js/app');
+jest.dontMock('react')
 
 // import React from 'react';
 // import ReactDOM from 'react-dom';
@@ -14,8 +15,8 @@ var MessageComponent = require('../public/js/app');
 
 describe('some test on some component', () => {
   it('does something or other', () => {
-    const container = ReactDOM.findDOMNode(container);
     var message = TestUtils.renderIntoDocument( <Message />);
+    var messageNode = ReactDOM.findDOMNode(message);
     expect(textUtils.isCompositeComponent(message)).toBeTruthy();
   })
 })

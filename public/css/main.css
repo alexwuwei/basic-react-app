@@ -71,3 +71,7 @@ p {
 input {
   /*margin-right: 1%*/
 }
+
+.hidden {
+  display: none;
+}
